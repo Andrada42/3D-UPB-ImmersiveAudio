@@ -1,0 +1,5 @@
+# FMOD platform libraries — Windows autocrlf was corrupting the mac .bundle packages
+# (Info.plist / CodeResources need LF endings for macOS gatekeeper checksums)
+3D-UPB-ImmersiveAudio/[Aa]ssets/Plugins/FMOD/platforms/**/lib/** binary
+3D-UPB-ImmersiveAudio/[Aa]ssets/Plugins/FMOD/platforms/**/lib/**/Info.plist text eol=lf
+3D-UPB-ImmersiveAudio/[Aa]ssets/Plugins/FMOD/platforms/**/lib/**/CodeResources text eol=lf
