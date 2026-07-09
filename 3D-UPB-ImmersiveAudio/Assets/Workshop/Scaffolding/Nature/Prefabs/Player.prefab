@@ -1219,6 +1219,7 @@ GameObject:
   - component: {fileID: 8851287159852477366}
   - component: {fileID: 1336643626824563214}
   - component: {fileID: 3603059935785256966}
+  - component: {fileID: 2383967061341928510}
   - component: {fileID: 2509734528263388894}
   - component: {fileID: 5173187498874994955}
   - component: {fileID: 1930340279921320648}
@@ -1274,6 +1275,7 @@ MonoBehaviour:
     m_Bits: 1
   gravity: 20
   stepLength: 1.7
+  surfaceProviderBehaviour: {fileID: 2383967061341928510}
   characterController: {fileID: 5285402421153538694}
 --- !u!114 &1336643626824563214
 MonoBehaviour:
@@ -1306,6 +1308,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50c17464d26aefb4491acde92db09318, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Workshop.Import.Nature.Scripts.Collectible.CollectibleRemover
+--- !u!114 &2383967061341928510
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8697266057538272305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ce08c7e088a394db254859c2f30797, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Workshop.Scaffolding.Nature.Scripts.Player.TerrainFootstepSurfaceProvider
 --- !u!33 &2509734528263388894
 MeshFilter:
   m_ObjectHideFlags: 0
