@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Workshop.Import.Nature.Scripts.Collectible.CollectibleController
   animationController: {fileID: 4370073178528530905}
-  audioClip: {fileID: 0}
+  audioClip: {fileID: 8300000, guid: 53cb4c78fd19e0d40aed4cdbaa514893, type: 3}
 --- !u!135 &2277275759628233114
 SphereCollider:
   m_ObjectHideFlags: 0
