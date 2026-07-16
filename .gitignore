@@ -102,6 +102,7 @@ FMOD/**/Metadata/Workspace.xml
 
 # === OS / IDE ===
 
+.vsconfig
 .idea/
 .DS_Store
 .DS_Store?
