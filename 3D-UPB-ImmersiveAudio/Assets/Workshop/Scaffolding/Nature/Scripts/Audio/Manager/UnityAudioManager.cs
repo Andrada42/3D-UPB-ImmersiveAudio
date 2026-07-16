@@ -49,19 +49,19 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
             switch (type)
             {
                 case AudioUtils.AudioSurfaceType.Dirt:
-                    idx = UnityEngine.Random.Range(0, footstepDirtClips.Length - 1);
+                    idx = UnityEngine.Random.Range(0, footstepDirtClips.Length);
                     //Debug.Log($"Playing {idx}");
                     footstepSource.PlayOneShot(footstepDirtClips[idx]);
                     break;
 
                 case AudioUtils.AudioSurfaceType.Stone:
-                    idx = UnityEngine.Random.Range(0, footstepStoneClips.Length - 1);
+                    idx = UnityEngine.Random.Range(0, footstepStoneClips.Length);
                     //Debug.Log($"Playing {idx}");
                     footstepSource.PlayOneShot(footstepStoneClips[idx]);
                     break;
 
                 case AudioUtils.AudioSurfaceType.Wood:
-                    idx = UnityEngine.Random.Range(0, footstepWoodClips.Length - 1);
+                    idx = UnityEngine.Random.Range(0, footstepWoodClips.Length);
                     //Debug.Log($"Playing {idx}");
                     footstepSource.PlayOneShot(footstepWoodClips[idx]);
                     break;
