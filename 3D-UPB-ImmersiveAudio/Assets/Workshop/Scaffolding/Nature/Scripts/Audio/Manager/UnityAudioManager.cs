@@ -6,9 +6,9 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
     public class UnityAudioManager : AudioManager
     {
         public AudioSource footstepSource;
-        public AudioClip footstepDirtSound;
-        public AudioClip footstepStoneSound;
-        public AudioClip footstepWoodSound;
+        public AudioClip[] footstepDirtClips;
+        public AudioClip[] footstepStoneClips;
+        public AudioClip[] footstepWoodClips;
 
 
         private void OnEnable()
@@ -24,12 +24,30 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
         private void HandleFootstepDetected(AudioUtils.AudioSurfaceType type, float speed)
         {
             Debug.Log($"Footstep detected on {type} surface at speed {speed}");
+            
+            int idx = 0;
+
             switch (type)
             {
-                case AudioUtils.AudioSurfaceType.Dirt: footstepSource.PlayOneShot(footstepDirtSound); break;
-                case AudioUtils.AudioSurfaceType.Stone: footstepSource.PlayOneShot(footstepStoneSound); break;
-                case AudioUtils.AudioSurfaceType.Wood: footstepSource.PlayOneShot(footstepWoodSound); break;
-                case AudioUtils.AudioSurfaceType.None: break;
+                case AudioUtils.AudioSurfaceType.Dirt:
+                    idx = UnityEngine.Random.Range(0, footstepDirtClips.Length - 1);
+                    //Debug.Log($"Playing {idx}");
+                    footstepSource.PlayOneShot(footstepDirtClips[idx]);
+                    break;
+
+                case AudioUtils.AudioSurfaceType.Stone:
+                    idx = UnityEngine.Random.Range(0, footstepStoneClips.Length - 1);
+                    //Debug.Log($"Playing {idx}");
+                    footstepSource.PlayOneShot(footstepStoneClips[idx]);
+                    break;
+
+                case AudioUtils.AudioSurfaceType.Wood:
+                    idx = UnityEngine.Random.Range(0, footstepWoodClips.Length - 1);
+                    //Debug.Log($"Playing {idx}");
+                    footstepSource.PlayOneShot(footstepWoodClips[idx]);
+                    break;
+
+                case AudioUtils.AudioSurfaceType.None:break;
                 default: throw new ArgumentOutOfRangeException(nameof(type), type, null);
             }
         }
