@@ -16,7 +16,10 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
 
         [SerializeField, BoxGroup("FMOD Events")]
         private EventReference ambientEvent;
-        
+
+        [SerializeField, BoxGroup("FMOD Events")]
+        private EventReference jumpEvent;
+
         [SerializeField, BoxGroup("FMOD Events")]
         private EventReference collectiblePickupEvent;
         
@@ -45,12 +48,17 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
         {
             fpsController.OnFootstepDetected += HandleFootstepDetected;
             dayNightCycleController.OnDayNightCycleValueChanged += HandleDayNightCycleValueChanged;
+
+            fpsController.OnJump += HandleJump;
+        
         }
 
         private void OnDisable()
         {
             fpsController.OnFootstepDetected -= HandleFootstepDetected;
             dayNightCycleController.OnDayNightCycleValueChanged -= HandleDayNightCycleValueChanged;
+
+            fpsController.OnJump -= HandleJump;
         }
 
         private void Start()
@@ -75,6 +83,13 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
         private void HandleDayNightCycleValueChanged(float value)
         {
             ambientEventInstance.setParameterByName("AmbientBlend", value);
+        }
+
+        private void HandleJump(AudioUtils.AudioSurfaceType type)
+        {
+            EventInstance inst = RuntimeManager.CreateInstance(jumpEvent);
+            inst.setParameterByNameWithLabel("MaterialType", type.ToString());
+            inst.start();
         }
     }
 }

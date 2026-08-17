@@ -71,7 +71,7 @@ namespace Workshop.Scaffolding.Nature.Scripts.Player
         private IFootstepSurfaceProvider surfaceProvider;
 
         public event Action<AudioSurfaceType, float> OnFootstepDetected;
-        public event Action OnJump;
+        public event Action<AudioSurfaceType> OnJump;
     
         private float currentSpeed;
         private float targetSpeed;
@@ -153,7 +153,11 @@ namespace Workshop.Scaffolding.Nature.Scripts.Player
             verticalVelocity = Mathf.Sqrt(2f * gravity * jumpHeight);
             didJumpThisFrame = true;
             jumpCooldownTimer = jumpCooldown;
-            OnJump?.Invoke();
+            var jumpSurface = GetCurrentSurface();
+            if (jumpSurface != AudioSurfaceType.None)
+            {
+                OnJump?.Invoke(jumpSurface);
+            }
         }
 
         private void HandleMovement()

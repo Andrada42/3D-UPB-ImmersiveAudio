@@ -3034,6 +3034,13 @@ MonoBehaviour:
       Data3: -302631805
       Data4: 2075527771
     Path: event:/Ambient
+  jumpEvent:
+    Guid:
+      Data1: 2122364102
+      Data2: 1102278150
+      Data3: -1573680195
+      Data4: -1740511116
+    Path: event:/Jump
   collectiblePickupEvent:
     Guid:
       Data1: 0
