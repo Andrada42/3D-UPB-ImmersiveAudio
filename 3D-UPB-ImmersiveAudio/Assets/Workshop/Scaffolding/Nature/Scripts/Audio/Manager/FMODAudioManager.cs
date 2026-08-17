@@ -76,8 +76,16 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
         private void HandleFootstepDetected(AudioUtils.AudioSurfaceType type, float arg2)
         {
             EventInstance inst = RuntimeManager.CreateInstance(footstepEvent);  // ca Instantiate() din Unity dar pentru evenimente audio din FMOD
-            inst.setParameterByNameWithLabel("MaterialType", type.ToString());
+
+            String materialType = type.ToString();
+            if (fpsController.isTouchingWater){
+                Debug.Log("Is touching Water");
+                materialType = "Water";
+            }
+
+            inst.setParameterByNameWithLabel("MaterialType", materialType);
             inst.start();   // eveniment de tip OneShot
+            inst.release(); // eliberam memoria (distrugem instanta) dupa ce sunetul s-a terminat
         }
 
         private void HandleDayNightCycleValueChanged(float value)
@@ -90,6 +98,7 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
             EventInstance inst = RuntimeManager.CreateInstance(jumpEvent);
             inst.setParameterByNameWithLabel("MaterialType", type.ToString());
             inst.start();
+            inst.release();
         }
     }
 }

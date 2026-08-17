@@ -72,7 +72,10 @@ namespace Workshop.Scaffolding.Nature.Scripts.Player
 
         public event Action<AudioSurfaceType, float> OnFootstepDetected;
         public event Action<AudioSurfaceType> OnJump;
-    
+
+        // public bool isTouchingWater;                        => poate fi citita di modificata din exterior
+        public bool isTouchingWater { get; private set;}    // => poate fi doar citita din exterior
+
         private float currentSpeed;
         private float targetSpeed;
         private float verticalRotation;
@@ -264,6 +267,26 @@ namespace Workshop.Scaffolding.Nature.Scripts.Player
             Cursor.lockState = isLocked ? CursorLockMode.Locked : CursorLockMode.None;
             Cursor.visible   = !isLocked;
             shouldRotate     = isLocked;
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other == null)
+                return;
+            if (other.CompareTag("Water"))
+            {
+                isTouchingWater = true;
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other == null)
+                return;
+            if (other.CompareTag("Water"))
+            {
+                isTouchingWater = false;
+            }
         }
     }
 }
