@@ -1,6 +1,7 @@
 using DG.Tweening;
 using FMODUnity;
 using NaughtyAttributes;
+using System;
 using UnityEngine;
 using Workshop.Scaffolding.Nature.Scripts.Audio;
 
@@ -39,6 +40,8 @@ namespace Workshop.Scaffolding.Nature.Scripts.Staff
         {
             _initialScale = staffCrystal.localScale;
             staffLight.intensity = 0f;
+
+            staffLight.color = Color.white;
         }
 
         private void OnTriggerEnter(Collider other)
@@ -47,6 +50,8 @@ namespace Workshop.Scaffolding.Nature.Scripts.Staff
 
             TimelineBeatService.OnBeat += HandleBeat;
             TimelineBeatService.Start(timelineBeatEvent, transform.position);
+
+            TimelineBeatService.OnMarker += HandleMarker;
         }
 
         private void OnTriggerExit(Collider other)
@@ -56,11 +61,14 @@ namespace Workshop.Scaffolding.Nature.Scripts.Staff
             TimelineBeatService.OnBeat -= HandleBeat;
             TimelineBeatService.Stop();
 
+            TimelineBeatService.OnMarker -= HandleMarker;
+
             // Don't leave a pulse mid-flight once the player walks away.
             _lightTween?.Kill();
             _scaleTween?.Kill();
             staffLight.intensity    = 0f;
             staffCrystal.localScale = _initialScale;
+            staffLight.color        = Color.white;
         }
 
         private void HandleBeat(int bar, int beat)
@@ -75,6 +83,33 @@ namespace Workshop.Scaffolding.Nature.Scripts.Staff
             _scaleTween?.Kill();
             staffCrystal.localScale = _initialScale;
             _scaleTween = staffCrystal.DOPunchScale(Vector3.one * maxScaleAnimation, scalePunchDuration);
+        }
+
+        private void HandleMarker(string markerName)
+        {
+            Color staffColor;
+            switch (markerName)
+            {
+                case "Violet":
+                    staffColor = Color.violet;
+                    break;
+                case "Red":
+                    staffColor = Color.red;
+                    break;
+                case "Orange":
+                    staffColor = Color.orange;
+                    break;
+                case "Turquoise":
+                    staffColor = Color.turquoise;
+                    break;
+                case "Green":
+                    staffColor = Color.green;
+                    break;
+                default:
+                    staffColor = Color.white;
+                    break;
+            }
+            staffLight.color = staffColor;
         }
     }
 }
