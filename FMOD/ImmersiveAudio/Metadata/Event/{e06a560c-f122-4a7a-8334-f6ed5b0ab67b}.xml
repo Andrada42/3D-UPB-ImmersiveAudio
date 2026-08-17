@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="Event" id="{e06a560c-f122-4a7a-8334-f6ed5b0ab67b}">
 		<property name="name">
-			<value>Ambient</value>
+			<value>DayNightCycle</value>
 		</property>
 		<property name="outputFormat">
 			<value>1</value>
@@ -57,7 +57,7 @@
 			<destination>{1dc5e662-7bf0-4654-a0d8-8f6927e4e482}</destination>
 		</relationship>
 		<relationship name="output">
-			<destination>{b6785c17-cb58-4d7f-8a96-6d4253b8bd24}</destination>
+			<destination>{4226c076-20eb-4400-bdc3-d509bcd53c6d}</destination>
 		</relationship>
 	</object>
 	<object class="EventAutomatableProperties" id="{4881c5db-c28b-4994-973b-93ec0ee3cf56}" />

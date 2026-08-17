@@ -1,6 +1,8 @@
 using DG.Tweening;
+using FMODUnity;
 using NaughtyAttributes;
 using UnityEngine;
+using Workshop.Scaffolding.Nature.Scripts.Audio;
 
 namespace Workshop.Scaffolding.Nature.Scripts.Staff
 {
@@ -26,6 +28,9 @@ namespace Workshop.Scaffolding.Nature.Scripts.Staff
         [BoxGroup("Settings")]
         private float scalePunchDuration = 0.4f;
 
+        [SerializeField, BoxGroup("FMOD Events")]
+        private EventReference timelineBeatEvent;
+
         private Vector3 _initialScale;
         private Tween   _lightTween;
         private Tween   _scaleTween;
@@ -39,11 +44,17 @@ namespace Workshop.Scaffolding.Nature.Scripts.Staff
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag("Player")) return;
+
+            TimelineBeatService.OnBeat += HandleBeat;
+            TimelineBeatService.Start(timelineBeatEvent, transform.position);
         }
 
         private void OnTriggerExit(Collider other)
         {
             if (!other.CompareTag("Player")) return;
+
+            TimelineBeatService.OnBeat -= HandleBeat;
+            TimelineBeatService.Stop();
 
             // Don't leave a pulse mid-flight once the player walks away.
             _lightTween?.Kill();

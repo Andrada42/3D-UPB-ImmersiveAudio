@@ -6,6 +6,7 @@ using NaughtyAttributes;
 using System;
 using UnityEngine;
 using STOP_MODE = FMOD.Studio.STOP_MODE;
+using Workshop.Scaffolding.Nature.Scripts.Collectible;
 
 namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
 {
@@ -42,35 +43,56 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
         private string vcaMusic    = "vca:/VCA_Music";
 
         private EventInstance ambientEventInstance;
-
+        private EventInstance musicEventInstance;
+        private EventInstance underwaterSnapshotInstance;
 
         private void OnEnable()
         {
             fpsController.OnFootstepDetected += HandleFootstepDetected;
             dayNightCycleController.OnDayNightCycleValueChanged += HandleDayNightCycleValueChanged;
-
             fpsController.OnJump += HandleJump;
-        
+
+            CollectibleTracker.Instance.OnCollectibleGathered += HandleCollectibleGathered;
+            audioOptionsUIController.OnAudioOptionChanged += HandleAudioOptionChanged;
+            waterVolumeDetector.OnUnderwaterStateChanged += HandleUnderwaterStateChanged;
         }
 
         private void OnDisable()
         {
             fpsController.OnFootstepDetected -= HandleFootstepDetected;
             dayNightCycleController.OnDayNightCycleValueChanged -= HandleDayNightCycleValueChanged;
-
             fpsController.OnJump -= HandleJump;
+
+            if (CollectibleTracker.HasInstance)
+            {
+                CollectibleTracker.Instance.OnCollectibleGathered -= HandleCollectibleGathered;
+            }
+            audioOptionsUIController.OnAudioOptionChanged -= HandleAudioOptionChanged;
+            waterVolumeDetector.OnUnderwaterStateChanged -= HandleUnderwaterStateChanged;
         }
 
         private void Start()
         {
             ambientEventInstance = RuntimeManager.CreateInstance(ambientEvent);
             ambientEventInstance.start();
+
+            musicEventInstance = RuntimeManager.CreateInstance(musicEvent);
+            musicEventInstance.setParameterByName("MusicState", 0);
+            musicEventInstance.start();
+
+            underwaterSnapshotInstance = RuntimeManager.CreateInstance(underwaterSnapshot);
         }
 
         private void OnDestroy()
         {
             ambientEventInstance.stop(STOP_MODE.ALLOWFADEOUT);      // pentru sunetele looped
             ambientEventInstance.release();
+
+            musicEventInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            musicEventInstance.release();
+
+            underwaterSnapshotInstance.stop(STOP_MODE.ALLOWFADEOUT);
+            underwaterSnapshotInstance.release();
         }
 
         private void HandleFootstepDetected(AudioUtils.AudioSurfaceType type, float playerSpeed)
@@ -104,6 +126,43 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
             inst.setParameterByNameWithLabel("MaterialType", type.ToString());
             inst.start();
             inst.release();
+        }
+
+        private void HandleCollectibleGathered(CollectibleData data)
+        {
+            EventInstance inst = RuntimeManager.CreateInstance(collectiblePickupEvent);
+            var fmodPosittion = data.Position.To3DAttributes();
+            inst.set3DAttributes(fmodPosittion);
+            ProgrammerInstrumentService.SetupAndStartWithAudioClip(inst, data.Clip);    // Pt a seta la RunTime Clip-ul Audio
+
+            int musicState = data.Count % 4;
+            musicEventInstance.setParameterByName("MusicState", musicState);
+
+            inst.start();
+            inst.release();
+        }
+
+        private void HandleAudioOptionChanged(AudioUtils.AudioOptionType type, float volume)
+        {
+            String vcaPath = type switch
+            {
+                AudioUtils.AudioOptionType.Master => vcaMaster,
+                AudioUtils.AudioOptionType.SFX => vcaSFX,
+                AudioUtils.AudioOptionType.Ambience => vcaAmbience,
+                AudioUtils.AudioOptionType.Music => vcaMusic,
+                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+            };
+
+            VCA vca = RuntimeManager.GetVCA(vcaPath);
+            vca.setVolume(volume);
+        }
+
+        private void HandleUnderwaterStateChanged(bool isUnderwater)
+        {
+            if (isUnderwater)
+                underwaterSnapshotInstance.start();
+            else
+                underwaterSnapshotInstance.stop(STOP_MODE.ALLOWFADEOUT);
         }
     }
 }
