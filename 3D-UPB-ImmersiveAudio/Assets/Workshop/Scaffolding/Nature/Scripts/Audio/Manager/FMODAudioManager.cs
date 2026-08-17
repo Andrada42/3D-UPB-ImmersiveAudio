@@ -73,17 +73,22 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
             ambientEventInstance.release();
         }
 
-        private void HandleFootstepDetected(AudioUtils.AudioSurfaceType type, float arg2)
+        private void HandleFootstepDetected(AudioUtils.AudioSurfaceType type, float playerSpeed)
         {
             EventInstance inst = RuntimeManager.CreateInstance(footstepEvent);  // ca Instantiate() din Unity dar pentru evenimente audio din FMOD
 
             String materialType = type.ToString();
             if (fpsController.isTouchingWater){
-                Debug.Log("Is touching Water");
+                // Debug.Log("Is touching Water");
                 materialType = "Water";
             }
 
             inst.setParameterByNameWithLabel("MaterialType", materialType);
+            // Debug.Log($"PlayerSpeed is {playerSpeed}");
+            // OBS: 0.45 -> 0.5 Walk => In FMOD: <= 0.55 Walk pur
+            //      0.70 -> 1.0 Run              0.85 >= Run pur
+            inst.setParameterByName("PlayerSpeed", playerSpeed);
+            
             inst.start();   // eveniment de tip OneShot
             inst.release(); // eliberam memoria (distrugem instanta) dupa ce sunetul s-a terminat
         }
