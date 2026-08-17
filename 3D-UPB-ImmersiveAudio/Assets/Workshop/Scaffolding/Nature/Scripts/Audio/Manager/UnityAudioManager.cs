@@ -1,11 +1,15 @@
 using System;
 using UnityEngine;
+using UnityEngine.Audio;
 using Workshop.Scaffolding.Nature.Scripts.Collectible;
 
 namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
 {
     public class UnityAudioManager : AudioManager
     {
+        [Header("Audio Mixer")]
+        public AudioMixer audioMixer;
+
         [Header("Footsteps")]
         public AudioSource footstepSource;
         public AudioClip[] footstepDirtClips;
@@ -18,8 +22,13 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
         public AudioClip dayAmbienceClip;
         public AudioClip nightAmbienceClip;
 
+        [Header("Music")]
+        public AudioSource musicSource;
+        public AudioClip musicClip;
+
         [Header("Collectible")]
         public GameObject collectibleSource;
+        
 
         private void OnEnable()
         {
@@ -27,6 +36,8 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
             dayNightCycleController.OnDayNightCycleValueChanged += HandleDayNightCycleValueChanged;
             CollectibleTracker.Instance.OnCollectibleGathered += HandleCollectibleGathered;
             // CollectibleTracker = Singleton => se acceseaza cu .Instance
+
+            audioOptionsUIController.OnAudioOptionChanged += HandleAudioOptionChanged;
         }
 
         private void OnDisable()
@@ -44,13 +55,17 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
 
         private void Start()    // folosim Start() ci nu Awake() pt a fi siguri ca totul e pregatit si AudioSource-urile folosite exista (daca erau configurate intr-o metoda Awake() altundeva ar fi fost important)
         {
-            nightSource.volume = 1f;
+            daySource.volume = 1f;
             daySource.clip = dayAmbienceClip;
             daySource.Play();                   // Play() permite loop (setat din editor sau prin cod)
                                                 // PlayOneShot() nu permite
             nightSource.volume = 0f;
             nightSource.clip = nightAmbienceClip;
             nightSource.Play();
+
+            musicSource.volume = 0.5f;
+            musicSource.clip = musicClip;
+            musicSource.Play();
         }
 
         private void HandleFootstepDetected(AudioUtils.AudioSurfaceType type, float speed)
@@ -107,6 +122,22 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
 
             // Distrugem obiectul dupa ce se termina Clip-ul
             Destroy(audioInstance, data.Clip.length);
+        }
+
+        private void HandleAudioOptionChanged(AudioUtils.AudioOptionType type, float value)
+        {
+            value = Mathf.Clamp(value, 0.0001f, 1f);
+            var dbValue = Mathf.Log10(value) * 20;
+
+            switch (type)
+            {
+                case AudioUtils.AudioOptionType.Master: audioMixer.SetFloat("MasterVolume", dbValue); break;
+                case AudioUtils.AudioOptionType.SFX: audioMixer.SetFloat("SFXVolume", dbValue); break;
+                case AudioUtils.AudioOptionType.Ambience: audioMixer.SetFloat("AmbienceVolume", dbValue); break;
+                case AudioUtils.AudioOptionType.Music: audioMixer.SetFloat("MusicVolume", dbValue); break;
+                default: throw new ArgumentOutOfRangeException(nameof(type), type, null);
+
+            }
         }
     }
 }
