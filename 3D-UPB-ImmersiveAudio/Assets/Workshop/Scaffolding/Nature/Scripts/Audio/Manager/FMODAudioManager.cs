@@ -23,7 +23,10 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
 
         [SerializeField, BoxGroup("FMOD Events")]
         private EventReference collectiblePickupEvent;
-        
+
+        [SerializeField, BoxGroup("FMOD Events")]
+        private EventReference collectibleRemoveEvent;
+
         [SerializeField, BoxGroup("FMOD Events")]
         private EventReference musicEvent;
         
@@ -53,6 +56,7 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
             fpsController.OnJump += HandleJump;
 
             CollectibleTracker.Instance.OnCollectibleGathered += HandleCollectibleGathered;
+            CollectibleTracker.Instance.OnCollectibleRemoved += HandleCollectibleRemoved;
             audioOptionsUIController.OnAudioOptionChanged += HandleAudioOptionChanged;
             waterVolumeDetector.OnUnderwaterStateChanged += HandleUnderwaterStateChanged;
         }
@@ -66,6 +70,7 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
             if (CollectibleTracker.HasInstance)
             {
                 CollectibleTracker.Instance.OnCollectibleGathered -= HandleCollectibleGathered;
+                CollectibleTracker.Instance.OnCollectibleRemoved -= HandleCollectibleRemoved;
             }
             audioOptionsUIController.OnAudioOptionChanged -= HandleAudioOptionChanged;
             waterVolumeDetector.OnUnderwaterStateChanged -= HandleUnderwaterStateChanged;
@@ -135,11 +140,29 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
             inst.set3DAttributes(fmodPosittion);
             ProgrammerInstrumentService.SetupAndStartWithAudioClip(inst, data.Clip);    // Pt a seta la RunTime Clip-ul Audio
 
-            int musicState = data.Count % 4;
-            musicEventInstance.setParameterByName("MusicState", musicState);
-
             inst.start();
             inst.release();
+
+            int musicState = 0;
+            if (data.Count < 4)
+                musicState = data.Count % 4;
+            else
+                musicState = 3;
+            musicEventInstance.setParameterByName("MusicState", musicState);
+        }
+
+        private void HandleCollectibleRemoved(int currentCount)
+        {
+            EventInstance inst = RuntimeManager.CreateInstance(collectibleRemoveEvent);
+            inst.start();
+            inst.release();
+
+            int musicState = 0;
+            if (currentCount < 4)
+                musicState = currentCount;
+            else
+                musicState = 3;
+            musicEventInstance.setParameterByName("MusicState", musicState);
         }
 
         private void HandleAudioOptionChanged(AudioUtils.AudioOptionType type, float volume)
