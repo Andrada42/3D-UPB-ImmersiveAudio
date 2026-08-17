@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EncodableAsset" id="{4273bf5a-4ccb-4058-9148-0d2d995eae16}">
+		<property name="assetPath">
+			<value>SFX/Waterfalls Rivers and Streams/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2f2bf569-8919-4c15-8d09-9e5fe909d365}</destination>
+		</relationship>
+	</object>
+</objects>

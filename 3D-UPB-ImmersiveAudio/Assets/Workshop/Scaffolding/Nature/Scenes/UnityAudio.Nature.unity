@@ -3723,6 +3723,8 @@ MonoBehaviour:
   waterVolumeDetector: {fileID: 367439321}
   audioOptionsUIController: {fileID: 1871673496}
   audioMixer: {fileID: 24100000, guid: a95690f02e5dbc847814623dfe57253f, type: 2}
+  defaultSnapshot: {fileID: 24500006, guid: a95690f02e5dbc847814623dfe57253f, type: 2}
+  underwaterSnapshot: {fileID: -924325381443046750, guid: a95690f02e5dbc847814623dfe57253f, type: 2}
   footstepSource: {fileID: 2069233203}
   footstepDirtClips:
   - {fileID: 8300000, guid: f54890dd325ecce43b827991580c8782, type: 3}

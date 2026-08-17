@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{536d1f4b-4d10-4348-81a1-ff6a52b35704}">
+		<property name="assetPath">
+			<value>WAV Music/Music Loops/2 Journey INTRO TomMusic.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>218.40000000000001</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2f2bf569-8919-4c15-8d09-9e5fe909d365}</destination>
+		</relationship>
+	</object>
+</objects>

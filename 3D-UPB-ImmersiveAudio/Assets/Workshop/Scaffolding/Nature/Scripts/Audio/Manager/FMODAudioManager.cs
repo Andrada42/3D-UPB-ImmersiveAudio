@@ -1,8 +1,11 @@
 #if FMOD_INSTALLED
 
+using FMOD.Studio;
 using FMODUnity;
 using NaughtyAttributes;
+using System;
 using UnityEngine;
+using STOP_MODE = FMOD.Studio.STOP_MODE;
 
 namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
 {
@@ -34,6 +37,45 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
         
         [SerializeField, BoxGroup("FMOD VCAs")]
         private string vcaMusic    = "vca:/VCA_Music";
+
+        private EventInstance ambientEventInstance;
+
+
+        private void OnEnable()
+        {
+            fpsController.OnFootstepDetected += HandleFootstepDetected;
+            dayNightCycleController.OnDayNightCycleValueChanged += HandleDayNightCycleValueChanged;
+        }
+
+        private void OnDisable()
+        {
+            fpsController.OnFootstepDetected -= HandleFootstepDetected;
+            dayNightCycleController.OnDayNightCycleValueChanged -= HandleDayNightCycleValueChanged;
+        }
+
+        private void Start()
+        {
+            ambientEventInstance = RuntimeManager.CreateInstance(ambientEvent);
+            ambientEventInstance.start();
+        }
+
+        private void OnDestroy()
+        {
+            ambientEventInstance.stop(STOP_MODE.ALLOWFADEOUT);      // pentru sunetele looped
+            ambientEventInstance.release();
+        }
+
+        private void HandleFootstepDetected(AudioUtils.AudioSurfaceType type, float arg2)
+        {
+            EventInstance inst = RuntimeManager.CreateInstance(footstepEvent);  // ca Instantiate() din Unity dar pentru evenimente audio din FMOD
+            inst.setParameterByNameWithLabel("MaterialType", type.ToString());
+            inst.start();   // eveniment de tip OneShot
+        }
+
+        private void HandleDayNightCycleValueChanged(float value)
+        {
+            ambientEventInstance.setParameterByName("AmbientBlend", value);
+        }
     }
 }
 

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EncodableAsset" id="{5ea2c456-8a78-4071-852d-b54a928d9d52}">
+		<property name="assetPath">
+			<value>BGS Loops/Interior Night/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2f2bf569-8919-4c15-8d09-9e5fe909d365}</destination>
+		</relationship>
+	</object>
+</objects>

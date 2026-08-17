@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="EncodableAsset" id="{ac4c9312-79a0-4099-97c9-0a7c6f4e8f09}">
+		<property name="assetPath">
+			<value>BGS Loops/</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2f2bf569-8919-4c15-8d09-9e5fe909d365}</destination>
+		</relationship>
+	</object>
+</objects>

@@ -9,6 +9,8 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
     {
         [Header("Audio Mixer")]
         public AudioMixer audioMixer;
+        public AudioMixerSnapshot defaultSnapshot;
+        public AudioMixerSnapshot underwaterSnapshot;
 
         [Header("Footsteps")]
         public AudioSource footstepSource;
@@ -36,8 +38,9 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
             dayNightCycleController.OnDayNightCycleValueChanged += HandleDayNightCycleValueChanged;
             CollectibleTracker.Instance.OnCollectibleGathered += HandleCollectibleGathered;
             // CollectibleTracker = Singleton => se acceseaza cu .Instance
-
             audioOptionsUIController.OnAudioOptionChanged += HandleAudioOptionChanged;
+
+            waterVolumeDetector.OnUnderwaterStateChanged += HandleUnderwaterStateChanged;
         }
 
         private void OnDisable()
@@ -138,6 +141,14 @@ namespace Workshop.Scaffolding.Nature.Scripts.Audio.Manager
                 default: throw new ArgumentOutOfRangeException(nameof(type), type, null);
 
             }
+        }
+
+        private void HandleUnderwaterStateChanged(bool isUnderwater)
+        {
+            if (isUnderwater)
+                underwaterSnapshot.TransitionTo(0.1f);
+            else
+                defaultSnapshot.TransitionTo(0.1f);
         }
     }
 }

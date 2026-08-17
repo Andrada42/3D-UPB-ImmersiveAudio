@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="DataFile" id="{62646701-5b67-41b7-b72f-6a541da2939e}">
+		<property name="assetPath">
+			<value>SFX/Attacks/Bow Attacks Hits and Blocks/.DS_Store</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{2f2bf569-8919-4c15-8d09-9e5fe909d365}</destination>
+		</relationship>
+	</object>
+</objects>
