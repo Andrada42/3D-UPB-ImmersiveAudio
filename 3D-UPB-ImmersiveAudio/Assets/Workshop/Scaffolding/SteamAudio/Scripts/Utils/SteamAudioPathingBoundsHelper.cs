@@ -16,12 +16,12 @@ namespace Workshop.Scaffolding.SteamAudio.Scripts.Utils
             var geometrySet = FindObjectsByType<SteamAudioGeometry>(FindObjectsSortMode.None);
             
             // Build accumulated bounds from all meshes from the mesh setup.
-            var bounds = new Bounds();
+            var bounds = new Bounds();                      // volum incadrator
             foreach (var geometry in geometrySet)
             {
                 var meshRenderer = geometry.GetComponent<MeshRenderer>();
                 if (meshRenderer == null) continue;
-                bounds.Encapsulate(meshRenderer.bounds);
+                bounds.Encapsulate(meshRenderer.bounds);    // mareste volumul
             }
             // Set the bounds.
             transform.position   = bounds.center;

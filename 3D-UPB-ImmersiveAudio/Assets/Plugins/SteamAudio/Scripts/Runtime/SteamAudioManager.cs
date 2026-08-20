@@ -17,6 +17,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using System.Collections.Concurrent;
 using System.Threading;
 using AOT;
 using UnityEngine;
@@ -84,6 +85,10 @@ namespace SteamAudio
         Camera mMainCamera;
 
         static SteamAudioManager sSingleton = null;
+
+        // TODO-CUSTOM
+        private static readonly ConcurrentQueue<(UnityEngine.Vector3, UnityEngine.Vector3, bool)> SDebugPathSegments = new();
+        private static readonly PathingVisualizationCallback SPathingVisualizationCallback = OnDebugPathingVisualization;
 
         public static SteamAudioManager Singleton
         {
@@ -442,7 +447,7 @@ namespace SteamAudio
 
 #if UNITY_EDITOR && UNITY_2019_3_OR_NEWER
                 // If the developer has disabled scene reload, SceneManager.sceneLoaded won't fire during initial load
-                if ( EditorSettings.enterPlayModeOptionsEnabled &&
+                if (EditorSettings.enterPlayModeOptionsEnabled &&
                     EditorSettings.enterPlayModeOptions.HasFlag(EnterPlayModeOptions.DisableSceneReload))
                 {
                     OnSceneLoaded(SceneManager.GetActiveScene(), LoadSceneMode.Single);
@@ -552,6 +557,12 @@ namespace SteamAudio
                 mSimulator.Commit();
             }
 
+            // TODO-CUSTOM
+            while (SDebugPathSegments.TryDequeue(out var seg))
+            {
+                Debug.DrawLine(seg.Item1, seg.Item2, seg.Item3 ? Color.red : Color.green, 0.2f);
+            }
+
             var sharedInputs = new SimulationSharedInputs { };
 
             if (mListener != null)
@@ -567,7 +578,8 @@ namespace SteamAudio
             sharedInputs.duration = SteamAudioSettings.Singleton.realTimeDuration;
             sharedInputs.order = SteamAudioSettings.Singleton.realTimeAmbisonicOrder;
             sharedInputs.irradianceMinDistance = SteamAudioSettings.Singleton.realTimeIrradianceMinDistance;
-            sharedInputs.pathingVisualizationCallback = null;
+            // TODO-CUSTOM
+            sharedInputs.pathingVisualizationCallback = SPathingVisualizationCallback;
             sharedInputs.pathingUserData = IntPtr.Zero;
 
             mSimulator.SetSharedInputs(SimulationFlags.Direct, sharedInputs);
@@ -666,6 +678,16 @@ namespace SteamAudio
 
                 RunSimulationInternal();
             }
+        }
+
+        // TODO-CUSTOM
+        [MonoPInvokeCallback(typeof(PathingVisualizationCallback))]
+        static void OnDebugPathingVisualization(Vector3 from, Vector3 to, Bool occluded, IntPtr userData)
+        {
+            var f = Common.ConvertVector(from);
+            var t = Common.ConvertVector(to);
+            // Debug.Log($"[PathViz] {f:F2} -> {t:F2} occ={occluded}");
+            SDebugPathSegments.Enqueue((f, t, occluded == Bool.True));
         }
 
         public static void Initialize(ManagerInitReason reason)
@@ -1862,9 +1884,9 @@ namespace SteamAudio
                     {
                         var height = heights[v, u];
 
-                        var x = ((float) u / terrain.terrainData.heightmapResolution) * terrain.terrainData.size.x;
+                        var x = ((float)u / terrain.terrainData.heightmapResolution) * terrain.terrainData.size.x;
                         var y = height * terrain.terrainData.size.y;
-                        var z = ((float) v / terrain.terrainData.heightmapResolution) * terrain.terrainData.size.z;
+                        var z = ((float)v / terrain.terrainData.heightmapResolution) * terrain.terrainData.size.z;
 
                         var vertex = new UnityEngine.Vector3 { x = x, y = y, z = z };
                         var transformedVertex = terrain.transform.TransformPoint(vertex);

@@ -623,7 +623,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1729916503}
+    m_TransformParent: {fileID: 1451397473}
     m_Modifications:
     - target: {fileID: 280128272316271894, guid: 775bba09a5c569a49bbb179d30b3bb81, type: 3}
       propertyPath: m_Name
@@ -631,7 +631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 280128272316271894, guid: 775bba09a5c569a49bbb179d30b3bb81, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5185412424240463677, guid: 775bba09a5c569a49bbb179d30b3bb81, type: 3}
       propertyPath: m_LocalScale.x
@@ -2529,7 +2529,7 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -4328340887689848908, guid: e5e691d05d9e45f4293c7e82367f128f, type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 11d626f5d328df84f98b6a90cb9ac1f5, type: 3}
+  m_Resource: {fileID: 8300000, guid: 3df73362bdf3fe5468311b63755652ce, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -3136,7 +3136,7 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1729916503}
+    m_TransformParent: {fileID: 1451397473}
     m_Modifications:
     - target: {fileID: 8700742419560402728, guid: 85caf5e4e67b4e84e9212a926138b090, type: 3}
       propertyPath: m_Name
@@ -5739,6 +5739,58 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &1451397472
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1451397473}
+  - component: {fileID: 1451397474}
+  m_Layer: 0
+  m_Name: AudioDevices
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1451397473
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451397472}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1306592612}
+  - {fileID: 887438045}
+  m_Father: {fileID: 1729916503}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1451397474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1451397472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31f528d16d638a045b5ef578ee1adca5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SetAudioClip
+  speaker: 1
+  radio: 0
+  clipNumber: 1
+  clips:
+  - {fileID: 8300000, guid: 3df73362bdf3fe5468311b63755652ce, type: 3}
+  - {fileID: 8300000, guid: 11d626f5d328df84f98b6a90cb9ac1f5, type: 3}
 --- !u!43 &1507302174
 Mesh:
   m_ObjectHideFlags: 0
@@ -6363,8 +6415,7 @@ Transform:
   - {fileID: 1569781485}
   - {fileID: 607626658}
   - {fileID: 4667978206553449784}
-  - {fileID: 1306592612}
-  - {fileID: 887438045}
+  - {fileID: 1451397473}
   - {fileID: 1735025108}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8569,6 +8620,7 @@ GameObject:
   - component: {fileID: 8559759026382325069}
   - component: {fileID: 437539492317389713}
   - component: {fileID: 8559759026382325070}
+  - component: {fileID: 8559759026382325071}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -8635,6 +8687,35 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6285466747716798624}
   m_Enabled: 1
+--- !u!114 &8559759026382325071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6285466747716798624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fd9ebf1401392e4bbd47fea32f47642, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SteamAudioUnity::SteamAudio.SteamAudioListener
+  currentBakedListener: {fileID: 0}
+  applyReverb: 1
+  reverbType: 0
+  useAllProbeBatches: 0
+  probeBatches: []
+  mTotalDataSize: 0
+  mProbeDataSizes: 
+  mIdentifier:
+    type: 0
+    variation: 0
+    endpointInfluence:
+      center:
+        x: 0
+        y: 0
+        z: 0
+      radius: 0
+  mProbeBatchesUsed: []
 --- !u!33 &8848429001336406176
 MeshFilter:
   m_ObjectHideFlags: 0
